@@ -1,21 +1,17 @@
 import fs from "fs/promises";
 import { log } from "node:console";
 import path from "node:path"
+import crypto from "node:crypto";
 
 
-let archivo = path.join("data", "users.json");
+let archivo = path.join("data", "products.json");
 
 export default class ProductManager{
     
-    super(){
+    constructor(){
         this.products = []
     }
 
-    addProduct(){
-        
-    }
-
-    
 
     async cargar(){
         let data = await fs.readFile(archivo, "utf-8");
@@ -29,16 +25,10 @@ export default class ProductManager{
         }
     }
 
-
     async cargarProducto(id){
-        let data = await fs.readFile(archivo, "utf-8");
-        this.products = JSON.parse(data);
-        let product = this.products.find(fede => fede.id === Number(id));
-        console.log(product)
-        return product;
+        const productos = await this.cargar();
+        return productos.find(p => p.id === id);
     }
-
-
 
 
     async guardar(datos){
@@ -48,37 +38,62 @@ export default class ProductManager{
     }
 
 
-
     async guardarjson(datos){
         await fs.writeFile(archivo,
-            //JSON.stringify(users, null, 2)
             JSON.stringify(datos, null, 2)
         );
+    }
 
-        /*id: Number/String (No se manda desde el body, se autogenera para asegurar que nunca se repitan los ids).
-        title: String
-        description: String
-        code: String
-        price: Number
-        status: Boolean
-        stock: Number
-        category: String
-        thumbnails: Array de Strings (rutas donde están almacenadas las imágenes del producto).*/
+
+    async addProduct(producto) {
+        const productos = await this.cargar();
+        const nuevoProducto = {
+            id: crypto.randomUUID(),
+            title: producto.title,
+            description: producto.description,
+            code: producto.code,
+            price: producto.price,
+            status: producto.status ?? true,
+            stock: producto.stock,
+            category: producto.category,
+            thumbnails: producto.thumbnails ?? []
+        };
+        productos.push(nuevoProducto);
+        await this.guardar(productos);
+        return nuevoProducto;
+    }
+
+    async updateProduct(id, data) {
+        const productos = await this.cargar();
+
+        const index = productos.findIndex(p => p.id === id);
+        if (index === -1) return null;
+
+        // NO permitimos cambiar el id
+        const productoActualizado = {
+            ...productos[index],
+            ...data,
+            id: productos[index].id
+        };
+
+        productos[index] = productoActualizado;
+        await this.guardar(productos);
+
+        return productoActualizado;
+    }
+
+    async deleteProduct(id) {
+        const productos = await this.cargar();
+
+        const index = productos.findIndex(p => p.id === id);
+        if (index === -1) return null;
+
+        const eliminado = productos[index];
+
+        productos.splice(index, 1);
+        await this.guardar(productos);
+
+        return eliminado;
     }
 
 }
-
-
-const datos = {
-    nombre: "Federico",
-    edad: 23,
-    isTipazo: true
-}
-
-/*
-let pm = new ProductManager();
-let datos2 = await pm.cargar();
-console.log(datos2);*/
-//const users = JSON.parse(datos2);
-//console.log(users);
-//pm.guardarjson(datos);

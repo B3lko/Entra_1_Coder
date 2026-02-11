@@ -1,0 +1,31 @@
+[
+  {
+    "name": "Juan",
+    "email": "juan@mail.com",
+    "age": 25
+  },
+  {
+    "name": "Juan",
+    "email": "juan@mail.com",
+    "age": 25
+  },
+  {
+    "name": "Juan",
+    "email": "juan@mail.com",
+    "age": 25
+  },
+  {
+    "id": "9da2eb91-1d75-425c-b114-5d99a6a69489",
+    "title": "Teclado Mecánico",
+    "description": "Teclado mecánico RGB con switches blue",
+    "code": "TEC-001",
+    "price": 15000,
+    "status": true,
+    "stock": 25,
+    "category": "perifericos",
+    "thumbnails": [
+      "/img/teclado1.png",
+      "/img/teclado2.png"
+    ]
+  }
+]
