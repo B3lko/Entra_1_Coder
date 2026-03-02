@@ -1,20 +1,5 @@
 [
   {
-    "name": "Juan",
-    "email": "juan@mail.com",
-    "age": 25
-  },
-  {
-    "name": "Juan",
-    "email": "juan@mail.com",
-    "age": 25
-  },
-  {
-    "name": "Juan",
-    "email": "juan@mail.com",
-    "age": 25
-  },
-  {
     "id": "9da2eb91-1d75-425c-b114-5d99a6a69489",
     "title": "Teclado Mecánico",
     "description": "Teclado mecánico RGB con switches blue",
@@ -27,5 +12,25 @@
       "/img/teclado1.png",
       "/img/teclado2.png"
     ]
+  },
+  {
+    "id": "94b2cb55-7036-4304-afb8-e5ae5e7303ca",
+    "title": "Mouse",
+    "description": "Mouse gamer muy lindo",
+    "code": "3000",
+    "price": 50,
+    "status": true,
+    "stock": 23,
+    "thumbnails": []
+  },
+  {
+    "id": "165cb243-4117-46ab-8e31-bcc552dcdbc6",
+    "title": "Monitor",
+    "description": "Monitor chiquito portable",
+    "code": "2000",
+    "price": 40,
+    "status": true,
+    "stock": 3,
+    "thumbnails": []
   }
 ]
