@@ -1,25 +1,37 @@
 import { Router } from "express";
-import ProductManager from "../ProductManager.js";
+import Product from "../models/Product.js";
+import Cart from "../models/Cart.js";
 
 const router = Router();
-const productManager = new ProductManager();
 
-// HOME
-router.get("/home", async (req, res) => {
-    const productos = await productManager.cargar();
+router.get("/products", async (req, res) => {
 
-    res.render("home", {
-        productos
+    let { page = 1, limit = 5 } = req.query;
+
+    const result = await Product.paginate({}, {
+        page,
+        limit,
+        lean: true
+    });
+
+    res.render("products", {
+        products: result.docs,
+        page: result.page,
+        hasPrevPage: result.hasPrevPage,
+        hasNextPage: result.hasNextPage,
+        prevPage: result.prevPage,
+        nextPage: result.nextPage
     });
 });
 
-// REAL TIME PRODUCTS
-router.get("/realtimeproducts", async (req, res) => {
-    const productos = await productManager.cargar();
 
-    res.render("realTimeProducts", {
-        productos
-    });
+router.get("/carts/:cid", async (req, res) => {
+
+    const cart = await Cart.findById(req.params.cid)
+        .populate("products.product")
+        .lean();
+
+    res.render("cart", { cart });
 });
 
 export default router;

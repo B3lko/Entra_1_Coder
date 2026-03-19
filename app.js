@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from 'express';
 import { engine } from 'express-handlebars';
 import { Server } from "socket.io";
@@ -5,6 +7,7 @@ import http from "http";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import mongoose from "mongoose";
 
 import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
@@ -14,12 +17,16 @@ import ProductManager from './ProductManager.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const PORT = 8080;
+const PORT = process.env.PORT;
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
 const productManager = new ProductManager();
+
+mongoose.connect(process.env.MONGO_URL)
+    .then(() => console.log("Mongo conectado"))
+    .catch(err => console.log(err));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
